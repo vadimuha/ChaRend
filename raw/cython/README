@@ -1,0 +1,4 @@
+Setup.py is compuler. Argument of cythonize is programm to be compiled
+
+Optimized python has .so extention, working .so should be moved to Controller as worked class
+
