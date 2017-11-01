@@ -1,0 +1,43 @@
+html{
+	height: 98%;
+}
+body{
+	background-color: #25064C;
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+header{
+	width: 100%;
+	position: relative;
+	height: 10%;
+}
+main{
+	height: 85%;
+	width: 100%;
+	display: block;
+}
+footer{
+	height: 5%;
+	color:#9768D1;
+	text-align: center;
+}
+#ico{
+	float: right;
+	margin: 1px 10px;
+	color: #7B52AB;
+}
+.btn{
+	background-color: #553285;
+	color: #9768D1;
+}
+.btn:hover{
+	background-color: #7B52AB;
+	color: #9768D1;
+}
+.form-control{
+	background: #36175E;
+}
+.form-control:hover{
+	background: #7B52AB;
+}

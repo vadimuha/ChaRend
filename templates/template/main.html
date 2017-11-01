@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{% block title %}{% endblock %}</title>
+	{# Bootstrap css #}
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+	{# My css #}
+	<link rel="stylesheet" type="text/css" href={{ url_for("static",filename="style.css") }} >
+	{# Bootstrap js #}
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+</head>
+<body>
+	<header>
+	<nav id="ico" class="col-md-3">
+		 <div class="dropdown">
+		  <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-default" style="cursor: pointer;">
+		    Some info
+		    <span class="caret"></span>
+		  </button>
+		  <ul class="dropdown-menu" aria-labelledby="dLabel" style="background-color: #36175E;color: #9768D1;">
+		    ...
+		  </ul>
+		</div>
+	</nav>
+		 <div class="col-xs-3" style="width: 40%;margin: 5px auto;">
+		 	<button class="btn btn-default" type="submit" style="width: 20%;cursor: pointer;">Button</button>
+   			<input type="text" class="form-control" style="width: 75%;float: right;" placeholder="Search">
+ 		 </div>
+	</header>
+	<main>
+		s
+	</main>
+	<footer>
+		For cooperation vadimuha13@gmail.com
+	</footer>
+</body>
+</html>
