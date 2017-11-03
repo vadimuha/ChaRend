@@ -17,8 +17,7 @@
 	<nav id="ico" class="col-md-3">
 		 <div class="dropdown">
 		  <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-default" style="cursor: pointer;">
-		    Some info
-		    <span class="caret"></span>
+		    <span class="caret">{%block dropdown_name%}{% endblock %}</span>
 		  </button>
 		  <ul class="dropdown-menu" aria-labelledby="dLabel" style="background-color: #36175E;color: #9768D1;">
 		    {% block dropdown %}
@@ -27,8 +26,8 @@
 		</div>
 	</nav>
 		 <div class="col-xs-3" style="width: 40%;margin: 5px auto;">
-		 	<button class="btn btn-default" type="submit" style="width: 20%;cursor: pointer;">Button</button>
-   			<input type="text" class="form-control" style="width: 75%;float: right;" placeholder="Search">
+		 	<button class="btn btn-default" type="submit" style="width: 20%;cursor: pointer;">Search</button>
+   			<input type="text" class="form-control" style="width: 75%;float: right;" placeholder="">
  		 </div>
 	</header>
 	<main>

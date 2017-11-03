@@ -1,5 +1,6 @@
 html{
 	height: 98%;
+
 }
 body{
 	background-color: #25064C;
@@ -37,7 +38,21 @@ footer{
 }
 .form-control{
 	background: #36175E;
+	color:#7B52AB;
 }
 .form-control:hover{
 	background: #7B52AB;
+	color:#553285;
+}
+.form-control:focus{
+	background: #7B52AB;
+	color:#553285;
+}
+#regForm{
+	margin: 0 auto;
+	width: 50%;
+	color:#9768D1;
+}
+.btn{
+	cursor: pointer;
 }
