@@ -27,8 +27,6 @@ class Users(db.Model):
 		self.surname = surname
 		self.about = about
 		self.email = email
-	def cont(self,name,surname,about,day):
-		pass
 	def jsn(self):
 		return {
 			"username": self.username

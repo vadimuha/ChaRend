@@ -56,6 +56,6 @@ footer{
 .btn{
 	cursor: pointer;
 }
-#date{
-	margin:0 100px;
+label{
+	color:#9768D1 !important;
 }

@@ -32,13 +32,30 @@ def register():
 		return redirect(url_for('register_cont',username=username))
 	else:
 		return render_template("hack.html")
+
 @app.route('/register_cont',methods=['POST','GET'])
 def register_cont():
-	user = request.args['username']
-	query = Users.query.filter_by(username=user).first()
-	print(query.id)
-	return render_template("register_cont.html")
+	if request.method == "POST":
+		us = request.form.get("username")
+		user = Users.query.filter_by(username=us).first()
+		user.status=1
+		user.name = request.form.get('nme')
+		user.sname = request.form.get('sname')
+		user.about = request.form.get('desc')
+		month = request.form.get('DOBMonth')
+		day = request.form.get('DOBDay')
+		year = request.form.get('DOBYear')
+		user.day_of_birth = day+"/"+month+"/"+year
+		db.session.commit()
+		return redirect(url_for("profile",username=user.username))
+	if request.method == "GET":
+		usernamee = request.args['username']
+		return render_template("register_cont.html",user=usernamee)
 
+@app.route("/profile/<username>")
+def profile(username):
+	return "OK"
+	
 ''' Ajax section '''
 @app.route("/get_users",methods=['POST'])
 def get_users():

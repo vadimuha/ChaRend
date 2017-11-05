@@ -47,26 +47,14 @@ Register
 					re_pass.attr("style","border:#f00 solid 1px")
 					re_pass.attr("placeholder","Passwd not match")
 				}
-				else if(pass.val() == ''){
-					e.preventDefault()	
-					pass.attr("style","border:#f00 solid 1px")
-					pass.attr("placeholder","Empty password")
-				}
+				else is_not(pass,'',"Empty password",e)
 				if(pass.val().length < 6){
 					e.preventDefault()	
 					pass.attr("style","border:#f00 solid 1px")
 					pass.attr("placeholder","Need longer pass")		
 				}
-				if(email.val() == ''){
-					e.preventDefault()	
-					email.attr("style","border:#f00 solid 1px")
-					email.attr("placeholder","Empty email")
-				}
-				if(username.val() == ''){
-					e.preventDefault()	
-					username.attr("style","border:#f00 solid 1px")
-					username.attr("placeholder","Empty username")
-				}
+				is_not(email,'',"Empty email",e)
+				is_not(username,'',"Empty username",e)
 				$.ajax({
 					url:"{{ url_for('get_users') }}",
 					method: 'POST'
