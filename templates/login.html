@@ -1,0 +1,118 @@
+{% extends "template/main.html" %}
+
+{% block dropdown_name %}
+Register
+{% endblock %}
+{% block dropdown %}
+	
+	<form class="form-horizontal" method="post" action="{{ url_for('register') }}">
+	  <div class="form-group" id="username_form">
+	    <label for="username" class="col-sm-2 control-label">Username</label>
+	    <div class="col-sm-10">
+	      <input type="imput" class="form-control" id="username" placeholder="Username" name="username">
+	    </div>
+	  </div>
+	  <div class="form-group" id="email_form">
+	    <label for="email" class="col-sm-2 control-label">Email</label>
+	    <div class="col-sm-10">
+	      <input type="email" class="form-control" id="email" placeholder="Email" name="email">
+	    </div>
+	  </div>
+	  <div class="form-group" id="pass_form">
+	    <label for="pas" class="col-sm-2 control-label">Password</label>
+	    <div class="col-sm-10">
+	      <input type="password" class="form-control" id="pas" placeholder="Password" name="pass">
+	    </div>
+	  </div>
+	  <div class="form-group" id="re-pass_form">
+	    <label for="re-pass" class="col-sm-2 control-label" >Re Password</label>
+	    <div class="col-sm-10">
+	      <input type="password" class="form-control" id="re-pass" placeholder="Re-Password" name="re-pass">
+	    </div>
+	  </div>
+	  <div class="form-group" id="register_form">
+	    <div class="col-sm-offset-2 col-sm-10">
+	      <button type="submit" class="btn btn-default" name="register">Register</button>
+	    </div>
+	  </div>
+	</form>
+	<script type="text/javascript">
+			pass = $("input[name='pass']")
+			re_pass = $("input[name='re-pass']")
+			username = $("input[name='username']")
+			email = $("input[name='email']")
+			$("button[name='register']").click(function (e) {
+				if(pass.val() != re_pass.val() ){
+					e.preventDefault()	
+					re_pass.attr("style","border:#f00 solid 1px")
+					re_pass.attr("placeholder","Passwd not match")
+				}
+				else if(pass.val() == ''){
+					e.preventDefault()	
+					pass.attr("style","border:#f00 solid 1px")
+					pass.attr("placeholder","Empty password")
+				}
+				if(pass.val().length < 6){
+					e.preventDefault()	
+					pass.attr("style","border:#f00 solid 1px")
+					pass.attr("placeholder","Need longer pass")		
+				}
+				if(email.val() == ''){
+					e.preventDefault()	
+					email.attr("style","border:#f00 solid 1px")
+					email.attr("placeholder","Empty email")
+				}
+				if(username.val() == ''){
+					e.preventDefault()	
+					username.attr("style","border:#f00 solid 1px")
+					username.attr("placeholder","Empty username")
+				}
+				$.ajax({
+					url:"{{ url_for('get_users') }}",
+					method: 'POST'
+				}).done(function (data) {
+					data.forEach(function(item){
+						if(username.val()==item.username){
+							e.preventDefault()	
+							username.attr("style","border:#f00 solid 1px")
+							username.attr("placeholder","Username exists")
+						}
+					})
+					
+				})
+			})	
+	</script>
+
+{% endblock %}
+{% block body %}
+<div id="regForm">
+	<form class="form-horizontal" method="POST" action="{{ url_for('login') }}">
+	  <div class="form-group">
+	    <label for="inputEmail3" class="col-sm-2 control-label">Email/Login</label>
+	    <div class="col-sm-10">
+	      <input type="email" class="form-control" id="inputEmail3" placeholder="Email/Login" name="email">
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+	    <div class="col-sm-10">
+	      <input type="password" class="form-control" id="inputPassword3" placeholder="Password" name="password">
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <div class="col-sm-offset-2 col-sm-10">
+	      <div class="checkbox">
+	        <label>
+	          <input type="checkbox" name="remember_me"> Remember me
+	        </label>
+	      </div>
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <div class="col-sm-offset-2 col-sm-10">
+	      <button type="submit" class="btn btn-default" name="sign-in">Sign in</button>
+	    </div>
+	  </div>
+	</form>
+</div>
+{% endblock %}

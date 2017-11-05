@@ -50,9 +50,12 @@ footer{
 }
 #regForm{
 	margin: 0 auto;
-	width: 50%;
+	width: 60%;
 	color:#9768D1;
 }
 .btn{
 	cursor: pointer;
+}
+#date{
+	margin:0 100px;
 }
