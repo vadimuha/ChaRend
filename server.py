@@ -5,12 +5,13 @@ from db import *
 
 app = Flask(__name__)
 
-id = 0
+
 @app.route("/")
 def index():
 	return render_template("login.html")
 @app.route("/login",methods=['POST','GET'])
 def login():
+
 	return render_template("apology.html")
 @app.route("/register",methods=['POST','GET'])
 def register():
@@ -25,6 +26,7 @@ def register():
 		users = [e.jsn() for e in query]
 		if username in users:
 			return render_template("hack.html")
+		password = hashlib.sha256(str(password).encode('utf-8')).hexdigest()
 		new_ex = Users(username,password,None,None,None,email)
 		id = new_ex.username
 		db.session.add(new_ex)
@@ -54,11 +56,11 @@ def register_cont():
 
 @app.route("/profile/<username>")
 def profile(username):
-	return "OK"
 	
+	return render_template("apology.html")
+
 ''' Ajax section '''
 @app.route("/get_users",methods=['POST'])
 def get_users():
-	query = Users.query.order_by(Users.username).all()
+	query = Users.query.all()
 	return jsonify([e.jsn() for e in query])
-

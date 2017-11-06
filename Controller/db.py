@@ -1,5 +1,6 @@
-from flask import Flask,render_template,request,jsonify,redirect,url_for
+from flask import Flask,render_template,request,jsonify,redirect,url_for,session
 from flask_sqlalchemy import SQLAlchemy
+import hashlib
 
 app = Flask(__name__)
 
@@ -29,7 +30,9 @@ class Users(db.Model):
 		self.email = email
 	def jsn(self):
 		return {
-			"username": self.username
+			"username": self.username,
+			"passwd": self.passwd,
+			"mail": self.email
 		}
 
 class Groups(db.Model):
