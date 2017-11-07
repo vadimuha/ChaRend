@@ -67,22 +67,22 @@ Register
 					cond+=1
 				}
 				$.ajax({
-					url:"{{ url_for('get_users') }}",
-					method: 'POST'
+					method: 'GET',
+					url:"{{ url_for('check_username_existence') }}",
+					data: {
+						username: username.val(),
+					},
+					dataType: "json"
 				}).done(function (data) {
-					username_in_use = 0
-					data.forEach(function(item){
-						if(username.val() == item.username){
-							cond+=1
-							username_in_use = 1
-							username.attr("style","border:#f00 solid 1px")
-							username.attr("placeholder","Username exists")
-						}
-						if(!username_in_use){	
-							username.attr("style","border:#fff solid 1px")
-							username.attr("placeholder","Username")
-						}
-					})
+					if(data == '1'){
+						cond+=1
+						username.attr("style","border:#f00 solid 1px")
+						username.attr("placeholder","Username exists")
+					}
+					else if (data == '0'){	
+						username.attr("style","border:#fff solid 1px")
+						username.attr("placeholder","Username")
+					}
 					if(!cond){
 						form.submit()
 					}

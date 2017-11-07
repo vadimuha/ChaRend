@@ -42,7 +42,7 @@ def register_cont():
 		user = Users.query.filter_by(username=us).first()
 		user.status=1
 		user.name = request.form.get('nme')
-		user.sname = request.form.get('sname')
+		user.surname = request.form.get('sname')
 		user.about = request.form.get('desc')
 		month = request.form.get('DOBMonth')
 		day = request.form.get('DOBDay')
@@ -60,7 +60,13 @@ def profile(username):
 	return render_template("apology.html")
 
 ''' Ajax section '''
-@app.route("/get_users",methods=['POST'])
-def get_users():
-	query = Users.query.all()
-	return jsonify([e.jsn() for e in query])
+@app.route("/check_username_existence",methods=['GET'])
+def check_username_existence():
+	query = Users.query.order_by(Users.username).all()
+	jsn = [e.jsn() for e in query]
+	usr = request.args.get("username")
+	print(jsn)
+	for i in jsn:
+		if(usr in i["username"]):
+			return '1'
+	return '0'
