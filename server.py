@@ -13,6 +13,7 @@ def index():
 def login():
 
 	return render_template("apology.html")
+
 @app.route("/register",methods=['POST','GET'])
 def register():
 	if request.method == "POST":
@@ -56,7 +57,7 @@ def register_cont():
 
 @app.route("/profile/<username>")
 def profile(username):
-	
+	# TODO
 	return render_template("apology.html")
 
 ''' Ajax section '''
@@ -65,8 +66,30 @@ def check_username_existence():
 	query = Users.query.order_by(Users.username).all()
 	jsn = [e.jsn() for e in query]
 	usr = request.args.get("username")
-	print(jsn)
 	for i in jsn:
-		if(usr in i["username"]):
+		if(usr == i["username"]):
 			return '1'
 	return '0'
+
+@app.route("/check_login",methods=['GET'])
+def check_login():
+	log = request.args.get("login")
+	paswd = request.args.get("password")
+	query = Users.query.all()
+	jsn = [e.jsn() for e in query]
+
+	pl = 0
+	for i in jsn:
+		if log == i["username"] or log == i["mail"]:
+			pl = 1
+			if paswd == i["passwd"]:
+				pl = 1
+			else:
+				pl = 0
+	if pl:
+		return "1"
+	else:
+		return "0"
+
+if __name__ == "__main__":
+	app.run(host='0.0.0.0',debug=True)

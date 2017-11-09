@@ -32,7 +32,11 @@ class Users(db.Model):
 		return {
 			"username": self.username,
 			"passwd": self.passwd,
-			"mail": self.email
+			"mail": self.email,
+			"name": self.name,
+			"surname": self.surname,
+			"about": self.about,
+			"day_of_birth": self.day_of_birth
 		}
 
 class Groups(db.Model):

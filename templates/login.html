@@ -42,11 +42,11 @@ Register
 			username = $("input[name='username']")
 			email = $("input[name='email']")
 			$("#reg_form").submit(function (e) {
-				cond = 0
+				cond = {cond: 0}
 				e.preventDefault()
 				form = this
 				if(pass.val() != re_pass.val() ){
-					cond+=1
+					cond.cond+=1
 					re_pass.attr("style","border:#f00 solid 1px")
 					re_pass.attr("placeholder","Passwd not match")
 				}
@@ -54,18 +54,15 @@ Register
 					re_pass.attr("style","border:#fff solid 1px")
 					re_pass.attr("placeholder","Re-Password")	
 				}
-				worng_form(pass,'',"Empty Password",cond,"Password")
+				worng_form(pass,'',"Empty Password","Password",cond)
 
 				if(pass.val().length < 6){	
-					cond+=1
+					cond.cond+=1
 					pass.attr("style","border:#f00 solid 1px")
 					pass.attr("placeholder","Need longer pass")		
 				}
-				worng_form(email,'',"Empty Email",cond,"Email")
-				worng_form(username,'',"Empty username",cond,"Username")
-				if(email.val() == ''){
-					cond+=1
-				}
+				worng_form(email,'',"Empty Email","Email",cond)
+				worng_form(username,'',"Empty username","Username",cond)
 				$.ajax({
 					method: 'GET',
 					url:"{{ url_for('check_username_existence') }}",
@@ -75,7 +72,7 @@ Register
 					dataType: "json"
 				}).done(function (data) {
 					if(data == '1'){
-						cond+=1
+						cond.cond+=1
 						username.attr("style","border:#f00 solid 1px")
 						username.attr("placeholder","Username exists")
 					}
@@ -83,22 +80,21 @@ Register
 						username.attr("style","border:#fff solid 1px")
 						username.attr("placeholder","Username")
 					}
-					if(!cond){
+					if(!cond.cond){
 						form.submit()
 					}
 					
 				})
 			})	
 	</script>
-
 {% endblock %}
 {% block body %}
-<div id="regForm">
-	<form class="form-horizontal" id="form_reg" method="POST" action="{{ url_for('login') }}">
+<div>
+	<form class="form-horizontal" id="log_form" method="POST" action="{{ url_for('login') }}">
 	  <div class="form-group">
 	    <label for="inputEmail3" class="col-sm-2 control-label">Email/Login</label>
 	    <div class="col-sm-10">
-	      <input type="imput" class="form-control" id="inputEmail3" placeholder="Email/Login" name="email">
+	      <input type="input" class="form-control" id="inputEmail3" placeholder="Email/Login" name="email">
 	    </div>
 	  </div>
 	  <div class="form-group">
@@ -123,7 +119,39 @@ Register
 	  </div>
 	</form>
 	<script type="text/javascript">
+		$("#log_form").submit(function (e) {
+			e.preventDefault()
+			cond = {cond: 0}
+			login = $("#inputEmail3")
+			form = this
 
+			password = $("#inputPassword3")
+			bitArray = sjcl.hash.sha256.hash(password.val());  
+			pass = sjcl.codec.hex.fromBits(bitArray);   
+			
+			worng_form(login,'','empty Email/Login','Email/Login',cond)
+			worng_form(password,'','Empty Password','Password',cond)
+			$.ajax({
+				method: "GET",
+				url: "{{ url_for("check_login") }}",
+				data: {
+					login: login.val(),
+					password: pass
+				}
+			}).done(function (data) {
+				if(data == '0'){
+					login.attr("style","border:#f00 solid 1px")
+					login.attr("placeholder","Wrong login/password")
+					password.attr("style","border:#f00 solid 1px")
+					password.attr("placeholder","Wrong login/pass")
+					cond.cond+=1
+				}
+				console.log(cond.cond)
+				if(!cond.cond){
+					form.submit()
+				}
+			})
+		})
 	</script>
 </div>
 {% endblock %}
