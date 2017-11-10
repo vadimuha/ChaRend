@@ -6,13 +6,26 @@ from db import *
 app = Flask(__name__)
 
 
+app.secret_key = str(random.randint(0,9999999))
+
 @app.route("/")
 def index():
 	return render_template("login.html")
+
 @app.route("/login",methods=['POST','GET'])
 def login():
+	login = request.form.get("email")
+	password = request.form.get("password")
+	password = hashlib.sha256(str(password).encode('utf-8')).hexdigest()
+	query = Users.query.all()
+	jsn = [e.jsn() for e in query]
+	for i in jsn:
+		if login == i["username"] or login == i["mail"]:
+			if password == i["passwd"]:
+				session["user"] = i['id']
+				return redirect(url_for("profile",username=i["username"]))
 
-	return render_template("apology.html")
+	return render_template("hack.html")
 
 @app.route("/register",methods=['POST','GET'])
 def register():
@@ -32,7 +45,7 @@ def register():
 		id = new_ex.username
 		db.session.add(new_ex)
 		db.session.commit()
-		return redirect(url_for('register_cont',username=username))
+		return redirect(url_for('register_cont',username=username) )
 	else:
 		return render_template("hack.html")
 
@@ -50,7 +63,9 @@ def register_cont():
 		year = request.form.get('DOBYear')
 		user.day_of_birth = day+"/"+month+"/"+year
 		db.session.commit()
+		session['user'] = user.id
 		return redirect(url_for("profile",username=user.username))
+	
 	if request.method == "GET":
 		usernamee = request.args['username']
 		return render_template("register_cont.html",user=usernamee)

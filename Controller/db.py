@@ -1,6 +1,6 @@
 from flask import Flask,render_template,request,jsonify,redirect,url_for,session
 from flask_sqlalchemy import SQLAlchemy
-import hashlib
+import hashlib,time,random
 
 app = Flask(__name__)
 
@@ -36,7 +36,8 @@ class Users(db.Model):
 			"name": self.name,
 			"surname": self.surname,
 			"about": self.about,
-			"day_of_birth": self.day_of_birth
+			"day_of_birth": self.day_of_birth,
+			"id": self.id
 		}
 
 class Groups(db.Model):
