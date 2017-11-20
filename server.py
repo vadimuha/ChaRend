@@ -10,7 +10,11 @@ app.secret_key = str(random.randint(0,9999999))
 
 @app.route("/")
 def index():
-	return render_template("login.html")
+	try:
+		session['user']
+		return redirect(url_for("profile",username=session['user']))
+	except KeyError:
+		return render_template("login.html")
 
 @app.route("/login",methods=['POST','GET'])
 def login():
@@ -22,8 +26,8 @@ def login():
 	for i in jsn:
 		if login == i["username"] or login == i["mail"]:
 			if password == i["passwd"]:
-				session["user"] = i['id']
-				return redirect(url_for("profile",username=i["username"]))
+				session["user"] = i['username']
+				return redirect(url_for("profile"))
 
 	return render_template("hack.html")
 
@@ -72,8 +76,10 @@ def register_cont():
 
 @app.route("/profile/<username>")
 def profile(username):
-	# TODO
-	return render_template("apology.html")
+	query = Users.query.filter_by(username=username).first()
+	
+
+	return render_template("profile.html",username=username,name=query.name,sname=query.surname,desc=query.about)
 
 ''' Ajax section '''
 @app.route("/check_username_existence",methods=['GET'])

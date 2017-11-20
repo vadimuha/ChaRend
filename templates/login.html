@@ -66,7 +66,6 @@ Register
 					pass.attr("placeholder","Need longer pass")		
 				}
 				worng_form(email,'',"Empty Email","Email",cond)
-				worng_form(username,'',"Empty username","Username",cond)
 				$.ajax({
 					method: 'GET',
 					url:"{{ url_for('check_username_existence') }}",
@@ -84,6 +83,7 @@ Register
 						username.attr("style","border:#fff solid 1px")
 						username.attr("placeholder","Username")
 					}
+					worng_form(username,'',"Empty username","Username",cond)
 					if(!cond.cond){
 						form.submit()
 					}
@@ -109,11 +109,6 @@ Register
 	  </div>
 	  <div class="form-group">
 	    <div class="col-sm-offset-2 col-sm-10">
-	      <div class="checkbox">
-	        <label>
-	          <input type="checkbox" name="remember_me"> Remember me
-	        </label>
-	      </div>
 	    </div>
 	  </div>
 	  <div class="form-group">

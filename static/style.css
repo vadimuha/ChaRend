@@ -17,6 +17,7 @@ main{
 	height: 85%;
 	width: 100%;
 	display: block;
+	position: relative;
 }
 footer{
 	height: 5%;
@@ -31,6 +32,10 @@ footer{
 .btn{
 	background-color: #553285;
 	color: #9768D1;
+	cursor: pointer;
+}
+.profile_btn{
+	opacity: 0.8;
 }
 .btn:hover{
 	background-color: #7B52AB;
@@ -53,8 +58,27 @@ footer{
 	width: 60%;
 	color:#9768D1;
 }
-.btn{
-	cursor: pointer;
+#profile{
+	margin: 0 auto;
+	width: 60%;
+	height: 100%;
+}
+#description{
+	overflow-y: scroll;
+	color: #9768D1;
+	float: left;
+	margin-left: 3%;
+	width: 50%;
+	height: 30%;
+	resize: none;
+	background-color:#25064C;
+	border: none;
+}
+#name{
+	display: block;
+	color: #9768D1;
+	float: right;
+	width: 50%
 }
 label{
 	color:#9768D1 !important;
