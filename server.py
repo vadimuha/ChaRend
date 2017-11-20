@@ -1,6 +1,6 @@
 import sys
 
-sys.path.insert(0, 'Controller')
+sys.path.insert(0, 'Model')
 from db import *
 
 app = Flask(__name__)
@@ -27,6 +27,8 @@ def login():
 		if login == i["username"] or login == i["mail"]:
 			if password == i["passwd"]:
 				session["user"] = i['username']
+				if status == 1:
+					return redirect(url_for('register_cont',username=i['username']) )
 				return redirect(url_for("profile"))
 
 	return render_template("hack.html")
@@ -45,11 +47,11 @@ def register():
 		if username in users:
 			return render_template("hack.html")
 		password = hashlib.sha256(str(password).encode('utf-8')).hexdigest()
-		new_ex = Users(username,password,None,None,None,email)
+		new_ex = Users(username,password,None,None,None,email,1)
 		id = new_ex.username
 		db.session.add(new_ex)
 		db.session.commit()
-		return redirect(url_for('register_cont',username=username) )
+		return redirect(url_for('register_cont',username=username))
 	else:
 		return render_template("hack.html")
 
@@ -58,7 +60,7 @@ def register_cont():
 	if request.method == "POST":
 		us = request.form.get("username")
 		user = Users.query.filter_by(username=us).first()
-		user.status=1
+		user.status=2
 		user.name = request.form.get('nme')
 		user.surname = request.form.get('sname')
 		user.about = request.form.get('desc')
@@ -66,6 +68,8 @@ def register_cont():
 		day = request.form.get('DOBDay')
 		year = request.form.get('DOBYear')
 		user.day_of_birth = day+"/"+month+"/"+year
+		if request.form.get("img") != '':
+			user.img = request.form.get("img")
 		db.session.commit()
 		session['user'] = user.id
 		return redirect(url_for("profile",username=user.username))
@@ -77,9 +81,7 @@ def register_cont():
 @app.route("/profile/<username>")
 def profile(username):
 	query = Users.query.filter_by(username=username).first()
-	
-
-	return render_template("profile.html",username=username,name=query.name,sname=query.surname,desc=query.about)
+	return render_template("profile.html",username=username,name=query.name,sname=query.surname,desc=query.about,img=query.img,date=query.day_of_birth)
 
 ''' Ajax section '''
 @app.route("/check_username_existence",methods=['GET'])
