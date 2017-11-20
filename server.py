@@ -68,10 +68,12 @@ def register_cont():
 		day = request.form.get('DOBDay')
 		year = request.form.get('DOBYear')
 		user.day_of_birth = day+"/"+month+"/"+year
-		if request.form.get("img") != '':
+		if request.form.get("img"):
 			user.img = request.form.get("img")
+		else:
+			user.img = "http://www.passat-club.ru/forum/customavatars/avatar38167_1.gif"
 		db.session.commit()
-		session['user'] = user.id
+		session['user'] = user.username
 		return redirect(url_for("profile",username=user.username))
 	
 	if request.method == "GET":
