@@ -40,7 +40,8 @@ class Users(db.Model):
 			"about": self.about,
 			"day_of_birth": self.day_of_birth,
 			"id": self.id,
-			"status": self.status
+			"status": self.status,
+			"img": self.img
 		}
 
 class Groups(db.Model):

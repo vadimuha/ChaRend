@@ -24,6 +24,9 @@ footer{
 	color:#9768D1;
 	text-align: center;
 }
+#search_field{
+	width: 75%;float: right;
+}
 #ico{
 	float: right;
 	margin: 1px 10px;
@@ -82,4 +85,25 @@ footer{
 }
 label{
 	color:#9768D1 !important;
+}
+.person{
+	margin-bottom: 0.5%;
+	width: 100%; 
+}
+.person img{
+	width: 10%;
+	height: 10%
+}
+#search-container{
+	height: 90%;
+	width: 100%;
+	overflow-y: scroll;
+}
+a{
+	cursor: pointer;
+	color: #9768D1 !important;
+}
+a:hover{
+	text-decoration: underline;
+	color: #7B52AB !important;
 }

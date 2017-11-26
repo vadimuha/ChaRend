@@ -27,9 +27,9 @@ def login():
 		if login == i["username"] or login == i["mail"]:
 			if password == i["passwd"]:
 				session["user"] = i['username']
-				if status == 1:
+				if i['status'] == 1:
 					return redirect(url_for('register_cont',username=i['username']) )
-				return redirect(url_for("profile"))
+				return redirect(url_for("profile",username=session['user']))
 
 	return render_template("hack.html")
 
@@ -115,6 +115,13 @@ def check_login():
 		return "1"
 	else:
 		return "0"
+@app.route("/get_users",methods = ["GET"])
+def get_users():
+	user = request.args.get("user")
+	query = Users.query.filter((Users.name.like("%"+ user +"%")) | (Users.surname.like("%"+ user +"%"))).all()
+	jsn = [e.jsn() for e in query]
+	json = jsonify(jsn)
+	return json
 
 if __name__ == "__main__":
 	app.run(host='0.0.0.0',debug=True)
