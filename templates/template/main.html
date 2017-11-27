@@ -37,7 +37,7 @@
  		 </div>
  		 <script type="text/javascript">
  		 	btn = $("#search");
- 		 	input = $("input");
+ 		 	input = $("#search_field");
  		 	btn.click(function (e) {
  		 		if(input.val() == ''){
  		 			worng_form(input,'',"Empty Name","Name")
@@ -56,7 +56,7 @@
  		 			$("<div id='search-container'></div>").appendTo("main")
  		 			data.forEach(function (item) {
  		 				console.log(item)
- 		 				$("<div class='person'><a href='"+item.username+"'><img src='"+item.img+"'> "+ item.name+" "+ item.surname +" </a></div>").appendTo("#search-container")
+ 		 				$("<div class='person'><a href=/profile/"+item.username+"><img src='"+item.img+"'> "+ item.name+" "+ item.surname +" </a></div>").appendTo("#search-container")
  		 				
  		 				
  		 			})

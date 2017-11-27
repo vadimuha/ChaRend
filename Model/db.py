@@ -1,19 +1,19 @@
-from flask import Flask,render_template,request,jsonify,redirect,url_for,session
-from flask_sqlalchemy import SQLAlchemy
-import hashlib,time,random
+from config import *
 
-app = Flask(__name__)
+app = Flask(__name__)	# I don't know why but it does not work without it
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite3"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+
 db = SQLAlchemy(app)
+
 
 class Users(db.Model):
 	__tablename__ = "users"
 	id = db.Column("id",db.Integer,primary_key=True)
 	username = db.Column("username",db.Unicode,unique=True)
-	passwd = db.Column("passwd",db.Unicode)
+	passwd = db.Column("pass",db.Unicode)
 	status = db.Column("status",db.Integer)
 	name = db.Column("name",db.Unicode)
 	surname = db.Column("surname",db.Unicode)
@@ -30,7 +30,8 @@ class Users(db.Model):
 		self.about = about
 		self.email = email
 		self.status = status
-	def jsn(self):
+
+	def jsn(self):	# Custom jsoify func (dictonify)
 		return {
 			"username": self.username,
 			"passwd": self.passwd,
@@ -43,9 +44,14 @@ class Users(db.Model):
 			"status": self.status,
 			"img": self.img
 		}
-
-class Groups(db.Model):
+class Statistics(db.Model):
+	__tablename__ = "statistics"
 	id = db.Column("id",db.Integer,primary_key=True)
-	name = db.Column("name",db.Unicode,unique=True)
-	def __init__(self,name):
-		self.name = name
+	user_id = db.Column("user_id",db.Integer,db.ForeignKey("users.id"))
+	times_online = db.Column("times_online",db.Integer)
+	sent_messages = db.Column("sent_messages",db.Integer)
+
+	def __init__(self,user_id):
+		self.times_online = user_id
+		self.sent_messages = 0
+		self.user_id = 0

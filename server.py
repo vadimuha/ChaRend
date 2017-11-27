@@ -1,12 +1,9 @@
 import sys
 
 sys.path.insert(0, 'Model')
+sys.path.insert(0, 'Controller')
 from db import *
-
-app = Flask(__name__)
-
-
-app.secret_key = str(random.randint(0,9999999))
+from config import *
 
 @app.route("/")
 def index():
@@ -15,6 +12,7 @@ def index():
 		return redirect(url_for("profile",username=session['user']))
 	except KeyError:
 		return render_template("login.html")
+
 
 @app.route("/login",methods=['POST','GET'])
 def login():
@@ -43,12 +41,12 @@ def register():
 		if password != re_password:
 			return render_template("hack.html")
 		query = Users.query.order_by(Users.username).all()
-		users = [e.jsn() for e in query]
-		if username in users:
-			return render_template("hack.html")
+		if query != 0:
+			users = [e.jsn() for e in query]
+			if username in users:
+				return render_template("hack.html")
 		password = hashlib.sha256(str(password).encode('utf-8')).hexdigest()
 		new_ex = Users(username,password,None,None,None,email,1)
-		id = new_ex.username
 		db.session.add(new_ex)
 		db.session.commit()
 		return redirect(url_for('register_cont',username=username))
@@ -60,6 +58,8 @@ def register_cont():
 	if request.method == "POST":
 		us = request.form.get("username")
 		user = Users.query.filter_by(username=us).first()
+	
+
 		user.status=2
 		user.name = request.form.get('nme')
 		user.surname = request.form.get('sname')
@@ -72,7 +72,15 @@ def register_cont():
 			user.img = request.form.get("img")
 		else:
 			user.img = "http://www.passat-club.ru/forum/customavatars/avatar38167_1.gif"
+		
+
 		db.session.commit()
+		
+		new_ex = Statistics(user.id)
+		db.session.add(new_ex)
+		
+		db.session.commit()
+
 		session['user'] = user.username
 		return redirect(url_for("profile",username=user.username))
 	
@@ -101,20 +109,24 @@ def check_login():
 	log = request.args.get("login")
 	paswd = request.args.get("password")
 	query = Users.query.all()
-	jsn = [e.jsn() for e in query]
+	if query != 0:
+		jsn = [e.jsn() for e in query]
 
-	pl = 0
-	for i in jsn:
-		if log == i["username"] or log == i["mail"]:
-			pl = 1
-			if paswd == i["passwd"]:
+		pl = 0
+		for i in jsn:
+			if log == i["username"] or log == i["mail"]:
 				pl = 1
-			else:
-				pl = 0
-	if pl:
-		return "1"
+				if paswd == i["passwd"]:
+					pl = 1
+				else:
+					pl = 0
+		if pl:
+			return "1"
+		else:
+			return "0"
 	else:
-		return "0"
+		return "1"
+
 @app.route("/get_users",methods = ["GET"])
 def get_users():
 	user = request.args.get("user")
@@ -122,6 +134,11 @@ def get_users():
 	jsn = [e.jsn() for e in query]
 	json = jsonify(jsn)
 	return json
+
+@app.route("/clear_session", methods = ["GET"])
+def clear_session():
+	session.clear()
+	return render_template("hack.html")
 
 if __name__ == "__main__":
 	app.run(host='0.0.0.0',debug=True)
