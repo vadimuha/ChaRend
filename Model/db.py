@@ -52,6 +52,6 @@ class Statistics(db.Model):
 	sent_messages = db.Column("sent_messages",db.Integer)
 
 	def __init__(self,user_id):
-		self.times_online = user_id
+		self.times_online = 1
 		self.sent_messages = 0
-		self.user_id = 0
+		self.user_id = user_id

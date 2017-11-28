@@ -24,9 +24,12 @@ def login():
 	for i in jsn:
 		if login == i["username"] or login == i["mail"]:
 			if password == i["passwd"]:
-				session["user"] = i['username']
 				if i['status'] == 1:
 					return redirect(url_for('register_cont',username=i['username']) )
+				session["user"] = i['username']
+				stat = Statistics.query.filter_by(user_id=i['id']).first()
+				stat.times_online += 1
+				db.session.commit()
 				return redirect(url_for("profile",username=session['user']))
 
 	return render_template("hack.html")
@@ -72,13 +75,9 @@ def register_cont():
 			user.img = request.form.get("img")
 		else:
 			user.img = "http://www.passat-club.ru/forum/customavatars/avatar38167_1.gif"
-		
-
 		db.session.commit()
-		
-		new_ex = Statistics(user.id)
-		db.session.add(new_ex)
-		
+		new_stat = Statistics(user.id)
+		db.session.add(new_stat)
 		db.session.commit()
 
 		session['user'] = user.username
@@ -124,8 +123,6 @@ def check_login():
 			return "1"
 		else:
 			return "0"
-	else:
-		return "1"
 
 @app.route("/get_users",methods = ["GET"])
 def get_users():
