@@ -11,14 +11,14 @@
 	</script>
 	<form method="POST" action="{{ url_for('register_cont') }}">
 		<label for="nme" class="col-sm-2 control-label">Your Name</label>
-		<input type="text" id="nme" class="form-control" name="nme" placeholder="Your Name">
+		<input type="text" id="nme" class="form-control" name="nme" placeholder="Your Name" value="{{ name }}">
 
 		<label for="sname" class="col-sm-2 control-label">Your Surname</label>
-		<input type="text" id="sname" class="form-control" name="sname" placeholder="Your Surname">
-		<label for="img" class="col-sm-2 control-label">Your img url (optional)</label>
-		<input type="text" id="img" class="form-control" name="img" placeholder="Image">
+		<input type="text" id="sname" class="form-control" name="sname" placeholder="Your Surname" value="{{ sname }}">
+		<label for="img" class="col-sm-2 control-label">Your img url</label>
+		<input type="text" id="img" class="form-control" name="img" placeholder="Image" value="{{ img }}">
 		<label for="desc" class="col-sm-2 control-label">Describe yourself</label>
-		<textarea id="desc" class="form-control" rows="3" name="desc" placeholder="Describe yourself"></textarea>
+		<textarea id="desc" class="form-control" rows="3" name="desc" placeholder="Describe yourself"">{{ desc }}</textarea>
 		<div id="date">
 			<label class="col-sm-2 control-label">Your day of birth</label>
 			<select name="DOBMonth">

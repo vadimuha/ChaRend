@@ -92,6 +92,41 @@ def profile(username):
 	query = Users.query.filter_by(username=username).first()
 	return render_template("profile.html",username=username,name=query.name,sname=query.surname,desc=query.about,img=query.img,date=query.day_of_birth)
 
+@app.route("/messages")
+def messages():
+	query = Users.query.filter_by(username=session['user']).first()
+	return render_template("messages.html",name=query.name)
+
+@app.route("/settings",methods=['POST','GET'])
+def settings():
+	if request.method == "POST":
+		us = session['user']
+		user = Users.query.filter_by(username=us).first()
+
+		user.name = request.form.get('nme')
+		user.surname = request.form.get('sname')
+		user.about = request.form.get('desc')
+		month = request.form.get('DOBMonth')
+		day = request.form.get('DOBDay')
+		year = request.form.get('DOBYear')
+		if request.form.get('DOBYear'):
+			user.day_of_birth = day+"/"+month+"/"+year
+		if request.form.get("img"):
+			user.img = request.form.get("img")
+		else:
+			user.img = "http://www.passat-club.ru/forum/customavatars/avatar38167_1.gif"
+		db.session.commit()
+
+		session['user'] = user.username
+		return redirect(url_for("profile",username=user.username))
+
+	if request.method == "GET":
+		us = session['user']
+		user = Users.query.filter_by(username=us).first()
+		usernamee = user.username
+		return render_template("settings.html",user=usernamee,img=user.img,desc=user.about,sname=user.surname,name=user.name)
+
+
 ''' Ajax section '''
 @app.route("/check_username_existence",methods=['GET'])
 def check_username_existence():
@@ -110,7 +145,6 @@ def check_login():
 	query = Users.query.all()
 	if query != 0:
 		jsn = [e.jsn() for e in query]
-
 		pl = 0
 		for i in jsn:
 			if log == i["username"] or log == i["mail"]:

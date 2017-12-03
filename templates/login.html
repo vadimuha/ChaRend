@@ -41,6 +41,7 @@ Register
 	  </div>
 	</form>
 	<script type="text/javascript">
+
 			pass = $("input[name='pass']")
 			re_pass = $("input[name='re-pass']")
 			username = $("input[name='username']")
@@ -93,6 +94,9 @@ Register
 	</script>
 {% endblock %}
 {% block body %}
+<script type="text/javascript">
+	$("#srch").hide()
+</script>
 <div>
 	<form class="form-horizontal" id="log_form" method="POST" action="{{ url_for('login') }}">
 	  <div class="form-group">
