@@ -6,11 +6,15 @@
 {% block title %} {{ name }} {% endblock %}
 {% block dropdown %}
 <button type="button" class="btn btn-default btn-xs profile_btn" id="home">Profile page</button><br>
+<button type="button" class="btn btn-default btn-xs profile_btn" id="sett">Change profile</button><br>
 <button type="button" class="btn btn-default btn-xs profile_btn" id="out">Log out</button>
 
 <script type="text/javascript">
 	$("#home").click(function () {
 		window.location.href = "{{ url_for('profile',username=session['user']) }}"
+	})
+	$("#sett").click(function () {
+		window.location.href = "{{ url_for('settings') }}"
 	})
 	$("#out").click(function () {
 		window.location.href = "{{ url_for('index') }}"
