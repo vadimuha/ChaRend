@@ -43,7 +43,7 @@
  		 			worng_form(input,'',"Empty Name","Name")
  		 		}
  		 		else{
- 		 		$("main *").hide();
+ 		 		$("main *").remove();
  		 		$.ajax({
 					method: 'GET',
 					url:"{{ url_for('get_users') }}",

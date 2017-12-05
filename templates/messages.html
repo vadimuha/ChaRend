@@ -35,14 +35,7 @@
 
 {% block body %}
 	<div id="chat">
-		<div class="sender">
-		sender
-		<p style="margin-left: 1%;">some</p>
-		</div>
-		<div class="reciever">
-		reciever
-		<p style="margin-left: 1%;">some</p>
-		</div>
+
 	</div>
 	<div id="communication">
 		<div class="col-xs-3" id="send"">
@@ -51,6 +44,8 @@
 		 </div>
 	</div>
 	<script type="text/javascript">
+
+	$("#chat *").remove()
 		$.ajax({
 			url: "{{ url_for('find_messages') }}",
 			method: "GET",
@@ -62,7 +57,7 @@
 			data.forEach(function (item) {
 				console.log(item)
 				console.log("{{ reciever }}")
-				if (item[4]){ 
+				if (item[4]){
 					$("<div class='sender'>"+item[6]+" <p style='margin-left: 1%;'>"+item[0]+"</p></div>").appendTo("#chat")
 				}
 				else {
@@ -80,6 +75,8 @@
 					message: $("#message_text").val(),
 					rec: "{{ reciever }}"
 				}
+			}).done(function () {
+				location.reload();
 			})
 		})
 

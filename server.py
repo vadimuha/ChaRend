@@ -50,8 +50,14 @@ def register():
 				return render_template("hack.html")
 		password = hashlib.sha256(str(password).encode('utf-8')).hexdigest()
 		new_ex = Users(username,password,None,None,None,email,1)
+		
 		db.session.add(new_ex)
+	
 		db.session.commit()
+		new_stat = Statistics(new_ex.id)
+		db.session.add(new_stat)
+		db.session.commit()
+
 		return redirect(url_for('register_cont',username=username))
 	else:
 		return render_template("hack.html")
@@ -76,9 +82,6 @@ def register_cont():
 		else:
 			user.img = "http://www.passat-club.ru/forum/customavatars/avatar38167_1.gif"
 		db.session.commit()
-		new_stat = Statistics(user.id)
-		db.session.add(new_stat)
-		db.session.commit()
 
 		session['user'] = user.username
 		return redirect(url_for("profile",username=user.username))
@@ -90,7 +93,8 @@ def register_cont():
 @app.route("/profile/<username>")
 def profile(username):
 	query = Users.query.filter_by(username=username).first()
-	return render_template("profile.html",username=username,name=query.name,sname=query.surname,desc=query.about,img=query.img,date=query.day_of_birth)
+	stat = Statistics.query.filter_by(user_id=query.id).first()
+	return render_template("profile.html",username=username,name=query.name,sname=query.surname,desc=query.about,img=query.img,date=query.day_of_birth,online=stat.times_online,mes=stat.sent_messages)
 
 @app.route("/messages",methods=['GET'])
 def messages():
@@ -183,6 +187,7 @@ def find_messages():
 			mess += [[i.message,i.sender,i.reciever,i.date,1,reciever.name,sender.name]]
 		else:
 			mess += [[i.message,i.sender,i.reciever,i.date,0,reciever.name,sender.name]]
+
 	return jsonify(mess)
 
 @app.route("/send_message")
@@ -193,6 +198,9 @@ def send_message():
 	message = request.args.get("message")
 	new_mess = Messages(sender.id,reciever.id,message)
 	db.session.add(new_mess)
+	user = Users.query.filter_by(username=session['user']).first()
+	stat = Statistics.query.filter_by(user_id=user.id).first()
+	stat.sent_messages += 1	
 	db.session.commit()
 	return "ok"
 

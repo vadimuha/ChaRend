@@ -107,6 +107,7 @@ a:hover{
 	text-decoration: underline;
 	color: #7B52AB !important;
 }
+p{color:#7B52AB;}
 #chat{
 	height: 80%;
 	width: 100%;
