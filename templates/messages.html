@@ -58,10 +58,10 @@
 				console.log(item)
 				console.log("{{ reciever }}")
 				if (item[4]){
-					$("<div class='sender'>"+item[6]+" <p style='margin-left: 1%;'>"+item[0]+"</p></div>").appendTo("#chat")
+					$("<div class='sender'>"+item[6]+" <p style='margin-left: 1%;'>"+item[0]+"</p>"+item[3]+"</div>").appendTo("#chat")
 				}
 				else {
-					$("<div class='reciever'>"+item[5]+" <p style='margin-left: 1%;'>"+item[0]+"</p></div>").appendTo("#chat")
+					$("<div class='reciever'>"+item[5]+" <p style='margin-left: 1%;'>"+item[0]+"</p> "+item[3]+"</div>").appendTo("#chat")
 				}
 			})
 		})
