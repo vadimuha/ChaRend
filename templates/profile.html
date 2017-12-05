@@ -17,7 +17,6 @@
 		window.location.href = "{{ url_for('settings') }}"
 	})
 	$("#out").click(function () {
-		window.location.href = "{{ url_for('index') }}"
 		$.ajax({
 			url: "{{ url_for('clear_session') }}",
 			method: "GET",
@@ -25,10 +24,9 @@
 				bla: "bla"
 			}
 		})
+		window.location.href = "{{ url_for('index') }}"
 	})
-	$("#message").click(function () {
-		window.location.href = "{{ url_for('messages') }}"
-	})
+
 </script>
 
 {% endblock %}
@@ -42,7 +40,8 @@
 {{ desc }}
 	</textarea>
 	{% if username != session['user'] %}
-	<a href="" id="msg" style="float: left; margin-top: -10%;margin-right: 10%;margin-left: 7%">messages</a>
+	<a href="{{ url_for('messages',reciever=username) }}" id="msg" style="float: left; margin-top: -10%;margin-right: 10%;margin-left: 7%">messages</a>
+
 	{% endif %}
 </div>
 

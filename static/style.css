@@ -107,3 +107,35 @@ a:hover{
 	text-decoration: underline;
 	color: #7B52AB !important;
 }
+#chat{
+	height: 80%;
+	width: 100%;
+}
+#communication{
+	width: 100%;
+	height: 20%;
+}
+#send_btn {
+	width: 15%;
+	cursor: pointer;
+	float: right;
+	margin-top: 1%;
+}
+#message_text {
+	width: 85%;
+	float: left;
+	resize: none;
+	border: none;
+}
+.reciever,.sender {
+	color: #7B52AB !important;
+	resize: none;
+	width: 100%;
+	margin-top: 1%;
+}
+.reciever {
+	background: #CC000F;
+}
+.sender {
+	background: #F5790F;
+}

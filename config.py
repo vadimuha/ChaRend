@@ -1,5 +1,6 @@
 from flask import Flask,render_template,request,jsonify,redirect,url_for,session
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import  and_, or_
 import hashlib,time,random
 
 app = Flask(__name__)

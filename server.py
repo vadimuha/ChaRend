@@ -92,10 +92,11 @@ def profile(username):
 	query = Users.query.filter_by(username=username).first()
 	return render_template("profile.html",username=username,name=query.name,sname=query.surname,desc=query.about,img=query.img,date=query.day_of_birth)
 
-@app.route("/messages")
+@app.route("/messages",methods=['GET'])
 def messages():
-	query = Users.query.filter_by(username=session['user']).first()
-	return render_template("messages.html",name=query.name)
+	
+	reciever_username = request.args.get('reciever')
+	return render_template("messages.html",reciever=reciever_username)
 
 @app.route("/settings",methods=['POST','GET'])
 def settings():
@@ -170,6 +171,30 @@ def get_users():
 def clear_session():
 	session.clear()
 	return render_template("hack.html")
+
+@app.route("/find_messages",methods = ["GET"])
+def find_messages():
+	sender = Users.query.filter_by(username=session['user']).first()
+	reciever = Users.query.filter_by(username=request.args.get("rec")).first()
+	messages = Messages.query.filter(or_(and_(Messages.reciever==reciever.id,Messages.sender==sender.id), and_(Messages.reciever==sender.id,Messages.sender==reciever.id))).all()
+	mess = []
+	for i in messages:
+		if (sender.id == i.sender):
+			mess += [[i.message,i.sender,i.reciever,i.date,1,reciever.name,sender.name]]
+		else:
+			mess += [[i.message,i.sender,i.reciever,i.date,0,reciever.name,sender.name]]
+	return jsonify(mess)
+
+@app.route("/send_message")
+def send_message():
+	reciever_id = request.args.get("rec")
+	sender = Users.query.filter_by(username=session['user']).first()
+	reciever = Users.query.filter_by(username=reciever_id).first()
+	message = request.args.get("message")
+	new_mess = Messages(sender.id,reciever.id,message)
+	db.session.add(new_mess)
+	db.session.commit()
+	return "ok"
 
 if __name__ == "__main__":
 	app.run(host='0.0.0.0',debug=True)

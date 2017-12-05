@@ -17,7 +17,6 @@
 		window.location.href = "{{ url_for('settings') }}"
 	})
 	$("#out").click(function () {
-		window.location.href = "{{ url_for('index') }}"
 		$.ajax({
 			url: "{{ url_for('clear_session') }}",
 			method: "GET",
@@ -25,6 +24,7 @@
 				bla: "bla"
 			}
 		})
+		window.location.href = "{{ url_for('index') }}"
 	})
 	$("#message").click(function () {
 		window.location.href = "{{ url_for('messages') }}"
@@ -34,5 +34,54 @@
 {% endblock %}
 
 {% block body %}
+	<div id="chat">
+		<div class="sender">
+		sender
+		<p style="margin-left: 1%;">some</p>
+		</div>
+		<div class="reciever">
+		reciever
+		<p style="margin-left: 1%;">some</p>
+		</div>
+	</div>
+	<div id="communication">
+		<div class="col-xs-3" id="send"">
+			<textarea class="form-control" id="message_text"></textarea>
+	 		<button class="btn btn-default" id="send_btn" type="submit">Send</button>
+		 </div>
+	</div>
+	<script type="text/javascript">
+		$.ajax({
+			url: "{{ url_for('find_messages') }}",
+			method: "GET",
+			data: {
+				rec: "{{ reciever }}"
+			}
+		}).done(function (data) {
+			console.log(data)
+			data.forEach(function (item) {
+				console.log(item)
+				console.log("{{ reciever }}")
+				if (item[4]){ 
+					$("<div class='sender'>"+item[6]+" <p style='margin-left: 1%;'>"+item[0]+"</p></div>").appendTo("#chat")
+				}
+				else {
+					$("<div class='reciever'>"+item[5]+" <p style='margin-left: 1%;'>"+item[0]+"</p></div>").appendTo("#chat")
+				}
+			})
+		})
 
+		$("#send_btn").click(function (e) {
+			e.preventDefault()
+			$.ajax({
+				url: "{{ url_for('send_message') }}",
+				method: "GET",
+				data:{
+					message: $("#message_text").val(),
+					rec: "{{ reciever }}"
+				}
+			})
+		})
+
+	</script>
 {% endblock %}

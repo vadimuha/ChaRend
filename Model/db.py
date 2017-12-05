@@ -44,6 +44,17 @@ class Users(db.Model):
 			"status": self.status,
 			"img": self.img
 		}
+class Messages(db.Model):
+	id = db.Column("id",db.Integer,primary_key=True)
+	sender = db.Column("sender",db.Integer,db.ForeignKey("users.id"))
+	reciever = db.Column("reciever",db.Integer,db.ForeignKey("users.id"))
+	date = db.Column("date",db.DateTime,default=db.func.now())
+	message = db.Column("message",db.Unicode)
+	def __init__(self,sender,reciever,message):
+		self.sender = sender
+		self.reciever = reciever
+		self.message = message
+
 class Statistics(db.Model):
 	__tablename__ = "statistics"
 	id = db.Column("id",db.Integer,primary_key=True)
